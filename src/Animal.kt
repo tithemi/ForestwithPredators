@@ -29,6 +29,9 @@ abstract class Animal(var currentTree: Tree) {
 
     abstract fun createChild() : Animal
 
+    abstract fun getMatingHunger() : Int
+    abstract fun getMatingCost() : Int
+
     fun isDead() : Boolean = hunger < 0
 
 
@@ -47,9 +50,9 @@ abstract class Animal(var currentTree: Tree) {
     }
 
     fun isMating(other : Animal) : Boolean {
-        if (other.javaClass == this.javaClass && this.hunger > World.MATING_HUNGER && other.hunger > World.MATING_HUNGER) {
-            this.hunger -= World.MATING_COST
-            other.hunger -= World.MATING_COST
+        if (other.javaClass == this.javaClass && this.hunger > getMatingHunger() && other.hunger > getMatingHunger()) {
+            this.hunger -= getMatingCost()
+            other.hunger -= getMatingCost()
             return true
         }
 

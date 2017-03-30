@@ -44,7 +44,10 @@ class Tree(val type: TreeType) {
         var food = World.MAX_TREE_FOOD
 
         fun update() {
-            food = Math.min(food + World.FOOD_REGEN, World.MAX_TREE_FOOD)
+            food = Math.min(food + World.FOOD_REGEN * when(this@Tree.type) {
+                TreeType.MAPLE -> 3
+                else -> 1
+            }, World.MAX_TREE_FOOD)
         }
     }
 

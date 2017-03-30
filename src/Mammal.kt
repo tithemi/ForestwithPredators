@@ -1,4 +1,12 @@
 abstract class Mammal(currentTree: Tree) : Animal(currentTree) {
+    override fun getMatingHunger(): Int {
+        return World.MATING_HUNGER
+    }
+
+    override fun getMatingCost(): Int {
+        return World.MATING_COST
+    }
+
     override fun eat() {
         hunger -= World.STARVATION
 

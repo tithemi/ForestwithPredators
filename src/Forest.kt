@@ -25,7 +25,7 @@ object forest {
 
     }
 
-    fun newAnimal() {
+    fun newMammal() {
         val tree = trees.randomItem()
 
         animals.add(when (rnd.nextInt(5)){
@@ -37,37 +37,32 @@ object forest {
         })
     }
 
-    fun newAnimalWithPredators() {
+    fun newPredator() {
         val tree = trees.randomItem()
 
-        animals.add(when (rnd.nextInt(7)){
-            0 -> Badger(tree)
-            1 -> Chipmunk(tree)
-            2 -> FlyingSqurrel(tree)
-            3 -> Squirrel(tree)
-            4 -> Wolf(tree)
-            5 -> Kite(tree)
-            else -> Woodpecker(tree)
+        animals.add(when (rnd.nextInt(2)){
+            0 -> Wolf(tree)
+            else -> Kite(tree)
         })
     }
 
     fun update() {
         for (tree in trees)
             tree.update()
+
         var toDelete = mutableListOf<Animal>()
-        for (animal in animals) {
+        for (animal in animals)
             animal.update()
-            if (animal.isDead())
-                toDelete.add(animal)
-        }
+
+        animals.filterTo(toDelete) { it.isDead() }
         animals.removeAll(toDelete)
 
-        for (group in animals.groupBy(Animal::currentTree)) {
-            for (i in 0 until group.value.size)
-                if (group.value[i].sex == Sex.FEMALE)
-                    for (j in i + 1 until group.value.size)
-                        if (group.value[j].sex == Sex.MALE && group.value[i].isMating(group.value[j]))
-                            animals.add(group.value[i].createChild())
+        for ((_, value) in animals.groupBy(Animal::currentTree)) {
+            for (i in 0 until value.size)
+                if (value[i].sex == Sex.FEMALE)
+                    for (j in i + 1 until value.size)
+                        if (value[j].sex == Sex.MALE && value[i].isMating(value[j]))
+                            animals.add(value[i].createChild())
         }
     }
 
